@@ -5,11 +5,28 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 
+import { auth } from '../firebase/config'
+
+const requireAuth = (to, from, next) => {
+  let user = auth.currentUser
+
+  if(!user){
+    //redirect to specific page
+    next({
+      name: 'Login'
+    })
+  } else {
+    //do nothing and let user carry on
+    next()
+  }
+}
+
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    beforeEnter: requireAuth
   },
   {
     path: '/login',
