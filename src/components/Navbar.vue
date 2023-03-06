@@ -27,6 +27,8 @@
 import { auth } from '../firebase/config'
 import { signOut } from 'firebase/auth'
 import getUser from '../composables/getUser'
+import { watchEffect } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default {
   setup(){
@@ -35,6 +37,14 @@ export default {
     const signOutUser = () => {
       signOut(auth)
     }
+
+    const router = useRouter()
+
+    watchEffect(() => {
+      if(!user.value){
+        router.push('/login')
+      }
+    })
 
     return {
       signOutUser,
